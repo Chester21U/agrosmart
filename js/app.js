@@ -90,14 +90,14 @@ function iniciarZoom() {
   const modal = new bootstrap.Modal("#modal-zoom");
   const img = $("#modal-zoom-img");
   const titulo = $("#modal-zoom-titulo");
-  $$("[data-zoom]").forEach((b) =>
-    b.addEventListener("click", () => {
-      img.src = b.dataset.zoom;
-      img.alt = b.dataset.zoomTitulo;
-      titulo.textContent = b.dataset.zoomTitulo;
-      modal.show();
-    })
-  );
+  document.addEventListener("click", (e) => {
+    const b = e.target.closest("[data-zoom]");
+    if (!b) return;
+    img.src = b.dataset.zoom;
+    img.alt = b.dataset.zoomTitulo;
+    titulo.textContent = b.dataset.zoomTitulo;
+    modal.show();
+  });
 }
 
 function iniciarAtajosPestanas() {
@@ -114,8 +114,12 @@ function iniciarCarrusel(laminas) {
   const indicadores = $("#carrusel-indicadores");
   laminas.forEach((titulo, i) => {
     const num = String(i + 1).padStart(2, "0");
+    const src = `img/diapositivas/lamina-${num}.webp`;
     const item = crear("div", { class: `carousel-item${i === 0 ? " active" : ""}` }, [
-      crear("img", { src: `img/diapositivas/lamina-${num}.webp`, alt: `Lámina ${i + 1}: ${titulo}`, loading: i === 0 ? "eager" : "lazy", width: "1600", height: "900" })
+      crear("button", { type: "button", class: "lamina", "data-zoom": src, "data-zoom-titulo": `Lámina ${i + 1} de ${laminas.length} · ${titulo}`, "aria-label": `Ampliar lámina ${i + 1}: ${titulo}` }, [
+        crear("img", { src, alt: `Lámina ${i + 1}: ${titulo}`, loading: i === 0 ? "eager" : "lazy", width: "1600", height: "900" })
+      ]),
+      crear("p", { class: "lamina-pie", text: `${i + 1} / ${laminas.length} · ${titulo}` })
     ]);
     interior.append(item);
     const punto = crear("button", { type: "button", "data-bs-target": "#carrusel", "data-bs-slide-to": String(i), "aria-label": titulo });

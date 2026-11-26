@@ -193,10 +193,12 @@ code { color: var(--verde); background: var(--verde-claro); padding: 0.1rem 0.4r
 @keyframes led { 0%, 49% { background: #ff3b3b; box-shadow: 0 0 22px 6px rgba(255, 59, 59, 0.7); } 50%, 100% { background: #5d1f1f; box-shadow: inset 0 -4px 8px rgba(0, 0, 0, 0.4); } }
 
 .carrusel-agro { border-radius: var(--radio); overflow: hidden; box-shadow: var(--sombra); background: #fff; }
-.carrusel-agro .carousel-item img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
-.carrusel-agro .carousel-control-prev-icon, .carrusel-agro .carousel-control-next-icon { background-color: rgba(31, 42, 34, 0.6); border-radius: 50%; padding: 1.4rem; background-size: 50%; }
-.carrusel-agro .carousel-indicators [data-bs-target] { background-color: var(--verde); width: 22px; }
-.carrusel-agro .carousel-indicators { margin-bottom: 0.4rem; }
+.carrusel-agro .lamina { display: block; width: 100%; padding: 0; border: none; background: #fff; cursor: zoom-in; }
+.carrusel-agro .lamina img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: contain; }
+.carrusel-agro .lamina-pie { margin: 0; padding: 0.75rem 3.5rem; text-align: center; font-weight: 700; color: var(--apagado); border-top: 1px solid var(--borde); }
+.carrusel-agro .carousel-control-prev, .carrusel-agro .carousel-control-next { width: 3.5rem; top: auto; bottom: 0; height: 3.1rem; opacity: 1; }
+.carrusel-agro .carousel-control-prev-icon, .carrusel-agro .carousel-control-next-icon { background-color: var(--verde); border-radius: 50%; width: 2.2rem; height: 2.2rem; background-size: 50%; }
+.carrusel-agro .carousel-indicators { display: none; }
 
 .marco-video { border-radius: var(--radio); overflow: hidden; background: #fff; border: 1px solid var(--borde); box-shadow: var(--sombra); max-width: 980px; margin: 0 auto; }
 .marco-video video { width: 100%; display: block; background: #000; }
