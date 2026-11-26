@@ -1,7 +1,7 @@
-import { DATOS } from "./datos.js";
-import { iniciarMqtt } from "./mqtt.js";
-import { iniciarRiego } from "./riego.js";
-import { iniciarVision } from "./vision.js";
+import { DATOS } from "./datos.js?v=20261126";
+import { iniciarMqtt } from "./mqtt.js?v=20261126";
+import { iniciarRiego } from "./riego.js?v=20261126";
+import { iniciarVision } from "./vision.js?v=20261126";
 
 const $ = (sel, raiz = document) => raiz.querySelector(sel);
 const $$ = (sel, raiz = document) => [...raiz.querySelectorAll(sel)];
