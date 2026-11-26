@@ -1,0 +1,656 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AgroSmart · Monitoreo Agrícola Inteligente</title>
+  <meta name="description" content="AgroSmart: riego automático, visión artificial para detectar plagas y dashboard en tiempo real, funcionando sin internet. Proyecto del Grupo A1, Universidad Gerardo Barrios.">
+  <meta name="theme-color" content="#2f5d36">
+  <meta property="og:title" content="AgroSmart · Monitoreo Agrícola Inteligente">
+  <meta property="og:description" content="Riego automático, IA para plagas y dashboard en vivo, sin internet.">
+  <meta property="og:image" content="img/maqueta.webp">
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="css/estilos.css" rel="stylesheet">
+</head>
+<body data-bs-spy="scroll" data-bs-target="#menu" data-bs-offset="90" tabindex="0">
+
+  <a class="visually-hidden-focusable saltar" href="#contenido">Saltar al contenido</a>
+
+  <header>
+    <nav id="menu" class="navbar navbar-expand-lg fixed-top navbar-agro" aria-label="Navegación principal">
+      <div class="container">
+        <a class="navbar-brand d-flex align-items-center gap-2" href="#inicio">
+          <i class="bi bi-flower1" aria-hidden="true"></i><span>AgroSmart</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#enlaces" aria-controls="enlaces" aria-expanded="false" aria-label="Abrir menú">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="enlaces">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item"><a class="nav-link" href="#problema">Proyecto</a></li>
+            <li class="nav-item"><a class="nav-link" href="#como-funciona">Cómo funciona</a></li>
+            <li class="nav-item"><a class="nav-link" href="#comunicacion">MQTT</a></li>
+            <li class="nav-item"><a class="nav-link" href="#riego">Simulador</a></li>
+            <li class="nav-item"><a class="nav-link" href="#vision">IA</a></li>
+            <li class="nav-item"><a class="nav-link" href="#galeria">Galería</a></li>
+            <li class="nav-item"><a class="nav-link" href="#preguntas">Preguntas</a></li>
+            <li class="nav-item"><a class="nav-link" href="#equipo">Equipo</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main id="contenido">
+
+    <section id="inicio" class="hero" aria-labelledby="titulo-inicio">
+      <div class="container">
+        <div class="row align-items-center g-5">
+          <div class="col-lg-5 revelar">
+            <p class="etiqueta-seccion text-white-50">Feria de Hardware y Automatización · UGB</p>
+            <h1 id="titulo-inicio" class="display-3 fw-bold text-white mb-2">AgroSmart</h1>
+            <p class="fs-3 fw-semibold text-white mb-3">Monitoreo Agrícola Inteligente</p>
+            <p class="lead hero-texto">Un invernadero que se riega solo cuando la tierra lo necesita, revisa sus hojas con inteligencia artificial y muestra todo en vivo. <strong>Sin internet.</strong></p>
+            <div class="d-flex flex-wrap gap-2 my-4">
+              <span class="chip chip-ambar"><i class="bi bi-droplet-fill"></i> Riego automático</span>
+              <span class="chip chip-claro"><i class="bi bi-eye-fill"></i> Visión artificial</span>
+              <span class="chip chip-azul"><i class="bi bi-wifi-off"></i> 100 % sin internet</span>
+            </div>
+            <div class="d-flex flex-wrap gap-3">
+              <a href="#riego" class="btn btn-ambar btn-lg"><i class="bi bi-play-circle-fill"></i> Probar el simulador</a>
+              <a href="#vision" class="btn btn-outline-light btn-lg"><i class="bi bi-camera-fill"></i> Probar la IA</a>
+            </div>
+          </div>
+          <div class="col-lg-7 revelar">
+            <figure class="hero-figura">
+              <img src="img/maqueta.webp" class="img-fluid" alt="Ilustración de la maqueta: invernadero con malla verde, planta en maceta, tanque de agua, cuarto de control y pantalla de la Raspberry Pi" width="1400" height="1001">
+              <div class="burbuja burbuja-1" aria-hidden="true"><i class="bi bi-moisture"></i> Suelo <b data-burbuja="hs">40</b> %</div>
+              <div class="burbuja burbuja-2" aria-hidden="true"><i class="bi bi-thermometer-half"></i> <b data-burbuja="t">30.5</b> °C</div>
+              <div class="burbuja burbuja-3" aria-hidden="true"><i class="bi bi-check-circle-fill"></i> SANA <b data-burbuja="ia">98</b> %</div>
+              <figcaption class="visually-hidden">Maqueta del proyecto AgroSmart</figcaption>
+            </figure>
+          </div>
+        </div>
+      </div>
+      <a href="#problema" class="bajar" aria-label="Ir a la siguiente sección"><i class="bi bi-chevron-double-down"></i></a>
+    </section>
+
+    <section id="problema" class="seccion" aria-labelledby="titulo-problema">
+      <div class="container">
+        <header class="text-center mb-5 revelar">
+          <p class="etiqueta-seccion">El problema</p>
+          <h2 id="titulo-problema" class="titulo-seccion">El campo pierde agua y cosechas</h2>
+        </header>
+        <div class="row g-4">
+          <article class="col-md-4 revelar">
+            <div class="tarjeta h-100 borde-azul">
+              <i class="bi bi-droplet-half icono-grande text-azul" aria-hidden="true"></i>
+              <p class="cifra text-azul">+<span data-contar="70">0</span> %</p>
+              <h3 class="h5 fw-bold">del agua dulce extraída en el mundo se usa en la agricultura</h3>
+              <p class="text-secondary mb-0">Regar «a ojo» o con horario fijo desperdicia agua.</p>
+            </div>
+          </article>
+          <article class="col-md-4 revelar">
+            <div class="tarjeta h-100 borde-rojo">
+              <i class="bi bi-bug-fill icono-grande text-rojo" aria-hidden="true"></i>
+              <p class="cifra text-rojo">hasta <span data-contar="40">0</span> %</p>
+              <h3 class="h5 fw-bold">de la producción agrícola mundial se pierde al año por plagas y enfermedades</h3>
+              <p class="text-secondary mb-0">Detectarlas tarde cuesta cosechas.</p>
+            </div>
+          </article>
+          <article class="col-md-4 revelar">
+            <div class="tarjeta h-100 borde-gris">
+              <i class="bi bi-wifi-off icono-grande text-secondary" aria-hidden="true"></i>
+              <p class="cifra text-secondary">Sin señal</p>
+              <h3 class="h5 fw-bold">muchas zonas rurales no tienen internet estable</h3>
+              <p class="text-secondary mb-0">Las soluciones «en la nube» no llegan al campo.</p>
+            </div>
+          </article>
+        </div>
+        <p class="fuente text-center mt-4">Fuente: FAO, Organización de las Naciones Unidas para la Alimentación y la Agricultura.</p>
+      </div>
+    </section>
+
+    <section id="solucion" class="seccion seccion-clara" aria-labelledby="titulo-solucion">
+      <div class="container">
+        <header class="text-center mb-5 revelar">
+          <p class="etiqueta-seccion">Nuestra solución</p>
+          <h2 id="titulo-solucion" class="titulo-seccion">Un invernadero que se cuida solo</h2>
+        </header>
+        <div class="row g-4">
+          <article class="col-md-4 revelar">
+            <div class="tarjeta tarjeta-modulo h-100">
+              <span class="icono-modulo fondo-azul"><i class="bi bi-droplet-fill" aria-hidden="true"></i></span>
+              <p class="etiqueta-modulo text-azul">Módulo A</p>
+              <h3 class="h3 fw-bold">Riega solo</h3>
+              <p>Mide la humedad del suelo y riega únicamente cuando baja de 30 %, hasta llegar a 60 %.</p>
+              <button class="btn btn-link p-0 fw-bold" type="button" data-ir-pestana="tab-a">Ver detalles <i class="bi bi-arrow-right"></i></button>
+            </div>
+          </article>
+          <article class="col-md-4 revelar">
+            <div class="tarjeta tarjeta-modulo h-100">
+              <span class="icono-modulo fondo-verde"><i class="bi bi-eye-fill" aria-hidden="true"></i></span>
+              <p class="etiqueta-modulo text-verde">Módulo B</p>
+              <h3 class="h3 fw-bold">Vigila las hojas</h3>
+              <p>Una cámara con inteligencia artificial reconoce hojas enfermas y activa una alarma.</p>
+              <button class="btn btn-link p-0 fw-bold" type="button" data-ir-pestana="tab-b">Ver detalles <i class="bi bi-arrow-right"></i></button>
+            </div>
+          </article>
+          <article class="col-md-4 revelar">
+            <div class="tarjeta tarjeta-modulo h-100">
+              <span class="icono-modulo fondo-rojo"><i class="bi bi-display" aria-hidden="true"></i></span>
+              <p class="etiqueta-modulo text-rojo">Módulo C</p>
+              <h3 class="h3 fw-bold">Muestra todo</h3>
+              <p>Dashboard en vivo: sensores, histórico, control de la bomba y estado del cultivo.</p>
+              <button class="btn btn-link p-0 fw-bold" type="button" data-ir-pestana="tab-c">Ver detalles <i class="bi bi-arrow-right"></i></button>
+            </div>
+          </article>
+        </div>
+        <div class="banda-verde mt-5 revelar"><i class="bi bi-shield-check"></i> Todo funciona en una red propia: <span class="text-ambar">sin internet y sin servicios en la nube</span></div>
+      </div>
+    </section>
+
+    <section id="como-funciona" class="seccion" aria-labelledby="titulo-como">
+      <div class="container">
+        <header class="text-center mb-4 revelar">
+          <p class="etiqueta-seccion">Arquitectura</p>
+          <h2 id="titulo-como" class="titulo-seccion">¿Cómo funciona?</h2>
+          <p class="subtitulo">Una Raspberry Pi es el cerebro y todos se conectan a ella por su propia red Wi-Fi.</p>
+        </header>
+        <figure class="diagrama revelar">
+          <button class="btn-zoom" type="button" data-zoom="img/diagramas/arquitectura.svg" data-zoom-titulo="Arquitectura general" aria-label="Ampliar diagrama de arquitectura">
+            <img src="img/diagramas/arquitectura.svg" alt="Diagrama: el nodo de cultivo con NodeMCU envía datos por MQTT a la Raspberry Pi, que ejecuta Mosquitto, Node-RED y la visión artificial; el usuario ve el dashboard por HTTP" loading="lazy">
+          </button>
+          <figcaption>Toca el diagrama para ampliarlo.</figcaption>
+        </figure>
+
+        <div class="revelar">
+          <ul class="nav nav-pills justify-content-center flex-wrap gap-2 mb-4" id="pestanas" role="tablist">
+            <li class="nav-item" role="presentation"><button class="nav-link active" id="tab-a" data-bs-toggle="pill" data-bs-target="#panel-a" type="button" role="tab" aria-controls="panel-a" aria-selected="true"><i class="bi bi-droplet"></i> Módulo A · Nodo</button></li>
+            <li class="nav-item" role="presentation"><button class="nav-link" id="tab-b" data-bs-toggle="pill" data-bs-target="#panel-b" type="button" role="tab" aria-controls="panel-b" aria-selected="false"><i class="bi bi-eye"></i> Módulo B · Visión</button></li>
+            <li class="nav-item" role="presentation"><button class="nav-link" id="tab-c" data-bs-toggle="pill" data-bs-target="#panel-c" type="button" role="tab" aria-controls="panel-c" aria-selected="false"><i class="bi bi-display"></i> Módulo C · Dashboard</button></li>
+            <li class="nav-item" role="presentation"><button class="nav-link" id="tab-red" data-bs-toggle="pill" data-bs-target="#panel-red" type="button" role="tab" aria-controls="panel-red" aria-selected="false"><i class="bi bi-wifi"></i> Red local</button></li>
+          </ul>
+          <div class="tab-content tarjeta">
+            <div class="tab-pane fade show active" id="panel-a" role="tabpanel" aria-labelledby="tab-a" tabindex="0">
+              <div class="row g-4">
+                <div class="col-lg-6">
+                  <h3 class="h4 fw-bold">Nodo de cultivo</h3>
+                  <p>Un <strong>NodeMCU ESP8266</strong> lee los sensores cada 2 segundos, decide si riega y manda los datos por Wi-Fi a la Raspberry Pi.</p>
+                  <ul class="lista-check">
+                    <li><strong>Sensor capacitivo de suelo</strong> (A0): no se oxida. Calibrado de 784 (seco) a 298 (en agua).</li>
+                    <li><strong>DHT11</strong> (D2): temperatura y humedad del aire.</li>
+                    <li><strong>Relé 5 V</strong> (D1): enciende la mini bomba sumergible.</li>
+                    <li><strong>Diodo 1N4148</strong>: absorbe el pico de voltaje del motor.</li>
+                  </ul>
+                  <p class="mb-0">La decisión de regar se toma <strong>dentro del NodeMCU</strong>: aunque la Pi se apague, el riego sigue funcionando.</p>
+                </div>
+                <div class="col-lg-6">
+                  <img src="img/diagramas/histeresis.svg" class="img-fluid rounded-3 border" alt="Gráfica de histéresis: la bomba enciende bajo 30 % de humedad y apaga al llegar a 60 %" loading="lazy">
+                </div>
+              </div>
+            </div>
+            <div class="tab-pane fade" id="panel-b" role="tabpanel" aria-labelledby="tab-b" tabindex="0">
+              <div class="row g-4">
+                <div class="col-lg-6">
+                  <h3 class="h4 fw-bold">Visión artificial</h3>
+                  <p>Una cámara USB mira la planta y un modelo <strong>YOLO11n-cls</strong> clasifica cada imagen como <strong>sana</strong>, <strong>plaga</strong> o <strong>fondo</strong>, dentro de la Raspberry Pi.</p>
+                  <ul class="lista-check">
+                    <li>Entrenado en Google Colab con fotos tomadas por la cámara del propio sistema.</li>
+                    <li>Exportado a ONNX y ejecutado con OpenCV, sin internet.</li>
+                    <li>Alerta si ve plaga con <strong>85 % o más durante 5 segundos</strong>.</li>
+                    <li>LED rojo (GPIO20) y zumbador tipo sirena (GPIO21).</li>
+                  </ul>
+                </div>
+                <div class="col-lg-6">
+                  <img src="img/diagramas/vision-pipeline.svg" class="img-fluid rounded-3 border" alt="Pasos de la visión: cámara, recorte, modelo YOLO11, promedio, regla y alerta" loading="lazy">
+                </div>
+              </div>
+            </div>
+            <div class="tab-pane fade" id="panel-c" role="tabpanel" aria-labelledby="tab-c" tabindex="0">
+              <div class="row g-4 align-items-center">
+                <div class="col-lg-5">
+                  <h3 class="h4 fw-bold">Dashboard en Node-RED</h3>
+                  <p>Una página web servida por la Raspberry Pi en <code>10.42.0.1:1880/dashboard</code>.</p>
+                  <ul class="lista-check">
+                    <li>Medidores de temperatura, humedad del aire y del suelo.</li>
+                    <li>Gráfica de los últimos 30 minutos.</li>
+                    <li>Interruptor Automático/Manual y botones de la bomba.</li>
+                    <li>Avisos de anti-inundación y depósito vacío.</li>
+                    <li>Video en vivo y estado de la IA.</li>
+                  </ul>
+                </div>
+                <div class="col-lg-7">
+                  <img src="img/diapositivas/lamina-12.webp" class="img-fluid rounded-3 border" alt="Vista del dashboard con medidores, control de riego, histórico y visión del cultivo" loading="lazy">
+                </div>
+              </div>
+            </div>
+            <div class="tab-pane fade" id="panel-red" role="tabpanel" aria-labelledby="tab-red" tabindex="0">
+              <div class="row g-4 align-items-center">
+                <div class="col-lg-5">
+                  <h3 class="h4 fw-bold">Una red propia</h3>
+                  <p>La Raspberry Pi no se conecta a un router: <strong>ella es el router</strong>. Crea la red Wi-Fi <code>AgroSmart</code> y reparte las direcciones IP.</p>
+                  <dl class="row datos-red mb-0">
+                    <dt class="col-5">IP de la Pi</dt><dd class="col-7"><code>10.42.0.1</code></dd>
+                    <dt class="col-5">Seguridad</dt><dd class="col-7">WPA2 (AES)</dd>
+                    <dt class="col-5">Banda</dt><dd class="col-7">2.4 GHz · canal 6</dd>
+                    <dt class="col-5">MQTT</dt><dd class="col-7">puerto 1883</dd>
+                    <dt class="col-5">Dashboard</dt><dd class="col-7">puerto 1880</dd>
+                    <dt class="col-5">Video</dt><dd class="col-7">puerto 8081</dd>
+                  </dl>
+                </div>
+                <div class="col-lg-7">
+                  <img src="img/diagramas/red.svg" class="img-fluid rounded-3 border" alt="La Raspberry Pi en el centro como punto de acceso, con el NodeMCU y la laptop conectados, sin internet" loading="lazy">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="comunicacion" class="seccion seccion-clara" aria-labelledby="titulo-mqtt">
+      <div class="container">
+        <header class="text-center mb-4 revelar">
+          <p class="etiqueta-seccion">Comunicación</p>
+          <h2 id="titulo-mqtt" class="titulo-seccion">Así viajan los mensajes con MQTT</h2>
+          <p class="subtitulo">Elige un mensaje y mira cómo pasa por el broker Mosquitto hasta llegar a su destino.</p>
+        </header>
+        <div class="tarjeta revelar">
+          <div class="d-flex flex-wrap justify-content-center gap-2 mb-4" role="group" aria-label="Tipos de mensaje">
+            <button class="btn btn-mensaje" type="button" data-mensaje="telemetria"><i class="bi bi-graph-up"></i> Telemetría</button>
+            <button class="btn btn-mensaje" type="button" data-mensaje="bomba"><i class="bi bi-power"></i> Encender bomba</button>
+            <button class="btn btn-mensaje" type="button" data-mensaje="modo"><i class="bi bi-toggle-on"></i> Cambiar modo</button>
+            <button class="btn btn-mensaje" type="button" data-mensaje="alarma"><i class="bi bi-exclamation-triangle"></i> Alarma</button>
+            <button class="btn btn-mensaje" type="button" data-mensaje="ia"><i class="bi bi-eye"></i> Estado IA</button>
+          </div>
+          <div class="escenario-mqtt" id="escenario-mqtt" aria-hidden="true">
+            <div class="nodo-mqtt" data-nodo="nodemcu"><i class="bi bi-cpu"></i><span>NodeMCU</span></div>
+            <div class="nodo-mqtt" data-nodo="vision"><i class="bi bi-camera-video"></i><span>vision.py</span></div>
+            <div class="nodo-mqtt nodo-broker" data-nodo="broker"><i class="bi bi-hdd-network"></i><span>Mosquitto</span><small>broker · 1883</small></div>
+            <div class="nodo-mqtt" data-nodo="nodered"><i class="bi bi-window-sidebar"></i><span>Node-RED</span></div>
+            <div class="paquete" id="paquete"></div>
+          </div>
+          <div class="row g-3 mt-2">
+            <div class="col-lg-5">
+              <p class="mb-1 fw-bold">Qué está pasando</p>
+              <p id="mqtt-texto" class="text-secondary" aria-live="polite">Toca un botón para enviar un mensaje.</p>
+            </div>
+            <div class="col-lg-7">
+              <p class="mb-1 fw-bold">Mensaje</p>
+              <pre class="codigo" id="mqtt-codigo" aria-live="polite">tema: —
+carga: —</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="riego" class="seccion" aria-labelledby="titulo-riego">
+      <div class="container">
+        <header class="text-center mb-4 revelar">
+          <p class="etiqueta-seccion">Simulador interactivo</p>
+          <h2 id="titulo-riego" class="titulo-seccion">Controla el riego como en el dashboard</h2>
+          <p class="subtitulo">Usa la misma lógica que el firmware del NodeMCU: histéresis 30/60 %, máximo 10 s, reposo de 60 s y bloqueo tras 3 cortes.</p>
+        </header>
+        <div class="row g-4 revelar">
+          <div class="col-lg-4">
+            <div class="tarjeta h-100 panel-control">
+              <div class="d-flex justify-content-between align-items-start mb-3">
+                <div>
+                  <p class="mb-0 text-secondary small fw-bold">HUMEDAD DEL SUELO</p>
+                  <p class="lectura mb-0"><span id="sim-hs">45</span><small>%</small></p>
+                </div>
+                <div class="bomba-icono" id="sim-bomba-icono" aria-hidden="true"><i class="bi bi-droplet-fill"></i></div>
+              </div>
+              <div class="barra-humedad mb-3" aria-hidden="true">
+                <div class="barra-relleno" id="sim-barra"></div>
+                <span class="marca marca-30">30</span><span class="marca marca-60">60</span>
+              </div>
+              <dl class="estado-lista">
+                <div><dt>Bomba</dt><dd id="sim-bomba">Detenida</dd></div>
+                <div><dt>Modo</dt><dd id="sim-modo">Automático</dd></div>
+                <div><dt>Estado</dt><dd id="sim-estado">Normal</dd></div>
+                <div><dt>Encendida</dt><dd><span id="sim-tiempo">0.0</span> / 10 s</dd></div>
+                <div><dt>Cortes seguidos</dt><dd><span id="sim-pulsos">0</span> / 3</dd></div>
+              </dl>
+              <div class="form-check form-switch fs-5 mb-3">
+                <input class="form-check-input" type="checkbox" role="switch" id="sim-auto" checked>
+                <label class="form-check-label fs-6 fw-semibold" for="sim-auto">Modo automático</label>
+              </div>
+              <div class="d-grid gap-2">
+                <button class="btn btn-agro" type="button" id="sim-on"><i class="bi bi-play-fill"></i> Encender bomba</button>
+                <button class="btn btn-agro" type="button" id="sim-off"><i class="bi bi-stop-fill"></i> Apagar bomba</button>
+                <button class="btn btn-outline-agro" type="button" id="sim-reset"><i class="bi bi-arrow-counterclockwise"></i> Reiniciar bloqueo</button>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-8">
+            <div class="tarjeta h-100 d-flex flex-column">
+              <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-2">
+                <p class="fw-bold mb-0">Humedad del suelo en el tiempo</p>
+                <div class="btn-group btn-group-sm" role="group" aria-label="Velocidad de la simulación">
+                  <input type="radio" class="btn-check" name="velocidad" id="vel-1" value="1"><label class="btn btn-outline-agro" for="vel-1">×1</label>
+                  <input type="radio" class="btn-check" name="velocidad" id="vel-5" value="5" checked><label class="btn btn-outline-agro" for="vel-5">×5</label>
+                  <input type="radio" class="btn-check" name="velocidad" id="vel-20" value="20"><label class="btn btn-outline-agro" for="vel-20">×20</label>
+                </div>
+              </div>
+              <canvas id="sim-grafica" class="grafica" height="300" role="img" aria-label="Gráfica de la humedad del suelo con los límites de 30 y 60 por ciento"></canvas>
+              <div class="d-flex flex-wrap gap-3 my-3">
+                <div class="form-check form-switch">
+                  <input class="form-check-input" type="checkbox" role="switch" id="sim-sensor">
+                  <label class="form-check-label" for="sim-sensor">Sacar el sensor de la tierra</label>
+                </div>
+                <div class="form-check form-switch">
+                  <input class="form-check-input" type="checkbox" role="switch" id="sim-vacio">
+                  <label class="form-check-label" for="sim-vacio">Tanque vacío</label>
+                </div>
+              </div>
+              <p class="fw-bold mb-1">Registro de eventos</p>
+              <ol class="registro" id="sim-registro" aria-live="polite"></ol>
+            </div>
+          </div>
+        </div>
+        <div class="row g-3 mt-2 revelar">
+          <div class="col-md-4"><div class="pista"><i class="bi bi-lightbulb"></i> <b>Prueba 1:</b> espera a que la humedad baje de 30 % y mira cómo riega sola.</div></div>
+          <div class="col-md-4"><div class="pista"><i class="bi bi-lightbulb"></i> <b>Prueba 2:</b> activa «Tanque vacío» y observa los 3 cortes y el bloqueo.</div></div>
+          <div class="col-md-4"><div class="pista"><i class="bi bi-lightbulb"></i> <b>Prueba 3:</b> pasa a manual y enciende la bomba: se corta a los 10 s.</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="vision" class="seccion seccion-clara" aria-labelledby="titulo-vision">
+      <div class="container">
+        <header class="text-center mb-4 revelar">
+          <p class="etiqueta-seccion">Visión artificial</p>
+          <h2 id="titulo-vision" class="titulo-seccion">La cámara reconoce hojas enfermas</h2>
+          <p class="subtitulo">Elige una imagen y mira cómo se aplica la regla de alerta: plaga con 85 % o más durante 5 segundos.</p>
+        </header>
+        <div class="row g-4 revelar">
+          <div class="col-lg-7">
+            <div class="tarjeta">
+              <div class="camara" id="vis-camara">
+                <img id="vis-imagen" src="img/hojas/sana.webp" alt="Hoja analizada por la cámara">
+                <video id="vis-video" playsinline muted hidden></video>
+                <div class="camara-barra"><span id="vis-etiqueta">SANA 98 %</span><span class="en-vivo">● EN VIVO</span></div>
+                <div class="camara-alerta" id="vis-alerta" hidden><i class="bi bi-exclamation-octagon-fill"></i> ¡PLAGA DETECTADA!</div>
+              </div>
+              <div class="d-flex flex-wrap gap-2 mt-3" role="group" aria-label="Imágenes de ejemplo" id="vis-ejemplos">
+                <button class="miniatura activa" type="button" data-ejemplo="sana" aria-label="Hoja sana"><img src="img/hojas/sana.webp" alt=""></button>
+                <button class="miniatura" type="button" data-ejemplo="sana-2" aria-label="Otra hoja sana"><img src="img/hojas/sana-2.webp" alt=""></button>
+                <button class="miniatura" type="button" data-ejemplo="plaga" aria-label="Hoja con plaga"><img src="img/hojas/plaga.webp" alt=""></button>
+                <button class="miniatura" type="button" data-ejemplo="plaga-2" aria-label="Otra hoja con plaga"><img src="img/hojas/plaga-2.webp" alt=""></button>
+                <button class="miniatura" type="button" data-ejemplo="fondo" aria-label="Fondo sin hoja"><img src="img/hojas/fondo.webp" alt=""></button>
+              </div>
+              <p class="fuente mt-2 mb-0" id="vis-nota">Modo simulación: los porcentajes son de ejemplo. Imágenes del dataset público PlantVillage.</p>
+            </div>
+          </div>
+          <div class="col-lg-5">
+            <div class="tarjeta h-100">
+              <p class="fw-bold mb-3">Probabilidad por clase</p>
+              <div class="barras" id="vis-barras">
+                <div class="barra-clase" data-clase="sana"><span>Sana</span><div class="pista-barra"><div class="relleno relleno-sana"></div></div><b>0 %</b></div>
+                <div class="barra-clase" data-clase="plaga"><span>Plaga</span><div class="pista-barra"><div class="relleno relleno-plaga"></div></div><b>0 %</b></div>
+                <div class="barra-clase" data-clase="fondo"><span>Fondo</span><div class="pista-barra"><div class="relleno relleno-fondo"></div></div><b>0 %</b></div>
+              </div>
+              <div class="regla mt-4">
+                <div class="anillo" id="vis-anillo" style="--progreso:0"><span id="vis-segundos">0.0</span><small>de 5 s</small></div>
+                <div>
+                  <p class="fw-bold mb-1">Regla de alerta</p>
+                  <p class="text-secondary small mb-0" id="vis-regla" aria-live="polite">Esperando una hoja con plaga…</p>
+                </div>
+              </div>
+              <div class="alarma mt-4">
+                <div class="led" id="vis-led" aria-hidden="true"></div>
+                <div class="flex-grow-1">
+                  <p class="fw-bold mb-0">LED + zumbador</p>
+                  <p class="small text-secondary mb-0">Sirena de 4500 / 3500 Hz</p>
+                </div>
+                <button class="btn btn-sm btn-outline-agro" type="button" id="vis-sonido" aria-pressed="false"><i class="bi bi-volume-mute-fill"></i> Sonido</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tarjeta mt-4 revelar" id="ia-real">
+          <div class="row g-3 align-items-center">
+            <div class="col-lg-7">
+              <h3 class="h4 fw-bold mb-1"><i class="bi bi-cpu-fill text-verde"></i> Prueba el modelo real</h3>
+              <p class="mb-0 text-secondary" id="ia-estado">Buscando el modelo…</p>
+            </div>
+            <div class="col-lg-5 d-flex flex-wrap gap-2 justify-content-lg-end">
+              <button class="btn btn-agro" type="button" id="ia-camara" disabled><i class="bi bi-camera-video-fill"></i> Usar cámara</button>
+              <label class="btn btn-outline-agro mb-0 disabled" id="ia-subir-etiqueta" for="ia-subir"><i class="bi bi-upload"></i> Subir foto</label>
+              <input type="file" id="ia-subir" accept="image/*" class="visually-hidden" disabled>
+              <button class="btn btn-outline-secondary" type="button" id="ia-detener" hidden><i class="bi bi-stop-circle"></i> Detener</button>
+            </div>
+          </div>
+        </div>
+
+        <figure class="diagrama mt-4 revelar">
+          <button class="btn-zoom" type="button" data-zoom="img/diagramas/vision-pipeline.svg" data-zoom-titulo="Pasos de la visión artificial" aria-label="Ampliar pasos de la visión">
+            <img src="img/diagramas/vision-pipeline.svg" alt="Seis pasos: cámara, recorte central, modelo YOLO11n-cls, promedio de 5 lecturas, regla de 85 % durante 5 segundos y alerta" loading="lazy">
+          </button>
+        </figure>
+      </div>
+    </section>
+
+    <section id="protecciones" class="seccion" aria-labelledby="titulo-protecciones">
+      <div class="container">
+        <header class="text-center mb-4 revelar">
+          <p class="etiqueta-seccion">Seguridad del riego</p>
+          <h2 id="titulo-protecciones" class="titulo-seccion">Un riego que no puede inundar</h2>
+        </header>
+        <div class="row g-4 align-items-center">
+          <div class="col-lg-8 revelar">
+            <figure class="diagrama mb-0">
+              <button class="btn-zoom" type="button" data-zoom="img/diagramas/estados-riego.svg" data-zoom-titulo="Estados del riego" aria-label="Ampliar estados del riego">
+                <img src="img/diagramas/estados-riego.svg" alt="Estados del riego: esperando, regando, reposo y bloqueo, con sus transiciones" loading="lazy">
+              </button>
+            </figure>
+          </div>
+          <div class="col-lg-4 revelar">
+            <div class="d-grid gap-3">
+              <div class="tarjeta borde-naranja py-3"><p class="cifra-mediana text-naranja mb-0">10 s</p><p class="fw-bold mb-0">máximo encendida</p><p class="small text-secondary mb-0">Si se pasa, se corta sola y avisa.</p></div>
+              <div class="tarjeta borde-azul py-3"><p class="cifra-mediana text-azul mb-0">60 s</p><p class="fw-bold mb-0">de reposo</p><p class="small text-secondary mb-0">El agua se filtra antes de volver a medir.</p></div>
+              <div class="tarjeta borde-rojo py-3"><p class="cifra-mediana text-rojo mb-0">3 cortes</p><p class="fw-bold mb-0">= depósito vacío</p><p class="small text-secondary mb-0">Bloquea el riego para cuidar la bomba.</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="cableado" class="seccion seccion-clara" aria-labelledby="titulo-cableado">
+      <div class="container">
+        <header class="text-center mb-4 revelar">
+          <p class="etiqueta-seccion">Hardware</p>
+          <h2 id="titulo-cableado" class="titulo-seccion">Componentes y conexiones</h2>
+          <p class="subtitulo">Sensores a 3.3 V, relé y bomba a 5 V, alarma en los pines 38, 39 y 40 de la Raspberry Pi.</p>
+        </header>
+        <figure class="diagrama revelar">
+          <button class="btn-zoom" type="button" data-zoom="img/diagramas/cableado.svg" data-zoom-titulo="Cableado completo" aria-label="Ampliar diagrama de cableado">
+            <img src="img/diagramas/cableado.svg" alt="Cableado del NodeMCU con sensor de suelo, DHT11, relé y bomba con diodo; y de la Raspberry Pi con LED y zumbador" loading="lazy">
+          </button>
+        </figure>
+        <div class="accordion revelar" id="acordeon-pines">
+          <div class="accordion-item">
+            <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#pines-nodo" aria-expanded="false" aria-controls="pines-nodo">Conexiones del NodeMCU</button></h3>
+            <div id="pines-nodo" class="accordion-collapse collapse" data-bs-parent="#acordeon-pines">
+              <div class="accordion-body table-responsive">
+                <table class="table table-sm align-middle mb-0">
+                  <thead><tr><th scope="col">Componente</th><th scope="col">Pin</th><th scope="col">Va a</th></tr></thead>
+                  <tbody>
+                    <tr><td>Sensor de suelo</td><td>AOUT · VCC · GND</td><td>A0 · 3V · G</td></tr>
+                    <tr><td>DHT11</td><td>S · + · −</td><td>D2 · 3V · G</td></tr>
+                    <tr><td>Relé</td><td>S · + · −</td><td>D1 · 5 V (VU) · GND</td></tr>
+                    <tr><td>Relé (tornillos)</td><td>COM · NO</td><td>5 V · rojo de la bomba</td></tr>
+                    <tr><td>Bomba</td><td>rojo · negro</td><td>NO del relé · GND</td></tr>
+                    <tr><td>Diodo 1N4148</td><td>raya · otra pata</td><td>rojo (+) · negro (−)</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#pines-pi" aria-expanded="false" aria-controls="pines-pi">Conexiones de la Raspberry Pi</button></h3>
+            <div id="pines-pi" class="accordion-collapse collapse" data-bs-parent="#acordeon-pines">
+              <div class="accordion-body table-responsive">
+                <table class="table table-sm align-middle mb-0">
+                  <thead><tr><th scope="col">Pin físico</th><th scope="col">Nombre</th><th scope="col">Va a</th></tr></thead>
+                  <tbody>
+                    <tr><td>38</td><td>GPIO20</td><td>220 Ω → pata larga del LED</td></tr>
+                    <tr><td>40</td><td>GPIO21</td><td>220 Ω → (+) del zumbador</td></tr>
+                    <tr><td>39</td><td>GND</td><td>pata corta del LED y (−) del zumbador</td></tr>
+                    <tr><td>USB</td><td>—</td><td>Cámara</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="galeria" class="seccion" aria-labelledby="titulo-galeria">
+      <div class="container">
+        <header class="text-center mb-4 revelar">
+          <p class="etiqueta-seccion">Galería</p>
+          <h2 id="titulo-galeria" class="titulo-seccion">Las láminas del stand</h2>
+        </header>
+        <div id="carrusel" class="carousel slide carrusel-agro revelar" data-bs-ride="carousel" data-bs-interval="6000">
+          <div class="carousel-indicators" id="carrusel-indicadores"></div>
+          <div class="carousel-inner" id="carrusel-interior"></div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#carrusel" data-bs-slide="prev"><span class="carousel-control-prev-icon" aria-hidden="true"></span><span class="visually-hidden">Anterior</span></button>
+          <button class="carousel-control-next" type="button" data-bs-target="#carrusel" data-bs-slide="next"><span class="carousel-control-next-icon" aria-hidden="true"></span><span class="visually-hidden">Siguiente</span></button>
+        </div>
+      </div>
+    </section>
+
+    <section id="video" class="seccion seccion-clara" aria-labelledby="titulo-video">
+      <div class="container">
+        <header class="text-center mb-4 revelar">
+          <p class="etiqueta-seccion">Demostración</p>
+          <h2 id="titulo-video" class="titulo-seccion">AgroSmart en acción</h2>
+        </header>
+        <div class="marco-video revelar">
+          <video id="video-demo" controls preload="metadata" poster="img/maqueta.webp" playsinline hidden></video>
+          <div class="video-pronto" id="video-pronto">
+            <i class="bi bi-camera-reels" aria-hidden="true"></i>
+            <p class="h4 fw-bold">Video de la demostración</p>
+            <p class="text-secondary mb-0">Muy pronto: el sistema regando, detectando una plaga y activando la alarma. Mientras tanto, pásate por el stand para verlo en vivo.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="cifras" class="seccion seccion-oscura" aria-labelledby="titulo-cifras">
+      <div class="container">
+        <header class="text-center mb-5 revelar">
+          <p class="etiqueta-seccion text-ambar">En números</p>
+          <h2 id="titulo-cifras" class="titulo-seccion text-white">AgroSmart en cifras</h2>
+        </header>
+        <div class="row g-4 text-center">
+          <div class="col-6 col-lg-3 revelar"><p class="cifra text-white mb-1"><span data-contar="2">0</span> s</p><p class="text-white-50">cada cuánto llegan los datos</p></div>
+          <div class="col-6 col-lg-3 revelar"><p class="cifra text-white mb-1">30/60</p><p class="text-white-50">% para encender y apagar el riego</p></div>
+          <div class="col-6 col-lg-3 revelar"><p class="cifra text-white mb-1"><span data-contar="10">0</span> s</p><p class="text-white-50">máximo de bomba encendida</p></div>
+          <div class="col-6 col-lg-3 revelar"><p class="cifra text-white mb-1"><span data-contar="85">0</span> %</p><p class="text-white-50">de confianza durante 5 s para la alarma</p></div>
+          <div class="col-6 col-lg-3 revelar"><p class="cifra text-ambar mb-1">0</p><p class="text-white-50">conexión a internet necesaria</p></div>
+          <div class="col-6 col-lg-3 revelar"><p class="cifra text-white mb-1"><span data-contar="3">0</span></p><p class="text-white-50">clases: sana, plaga y fondo</p></div>
+          <div class="col-6 col-lg-3 revelar"><p class="cifra text-white mb-1"><span data-contar="5">0</span></p><p class="text-white-50">temas MQTT</p></div>
+          <div class="col-6 col-lg-3 revelar"><p class="cifra text-white mb-1">1.5 M</p><p class="text-white-50">parámetros del modelo YOLO11n</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="preguntas" class="seccion" aria-labelledby="titulo-preguntas">
+      <div class="container contenedor-estrecho">
+        <header class="text-center mb-4 revelar">
+          <p class="etiqueta-seccion">Preguntas frecuentes</p>
+          <h2 id="titulo-preguntas" class="titulo-seccion">Todo lo que nos preguntan</h2>
+        </header>
+        <div class="revelar">
+          <label for="buscar" class="visually-hidden">Buscar pregunta</label>
+          <div class="input-group input-group-lg mb-3">
+            <span class="input-group-text"><i class="bi bi-search"></i></span>
+            <input type="search" class="form-control" id="buscar" placeholder="Busca: relé, MQTT, YOLO, diodo…" autocomplete="off">
+          </div>
+          <div class="d-flex flex-wrap gap-2 mb-2" id="filtros" role="group" aria-label="Filtrar por categoría"></div>
+          <p class="small text-secondary" id="contador" aria-live="polite"></p>
+          <div class="accordion" id="lista-preguntas"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="quiz" class="seccion seccion-clara" aria-labelledby="titulo-quiz">
+      <div class="container contenedor-estrecho">
+        <header class="text-center mb-4 revelar">
+          <p class="etiqueta-seccion">Ponte a prueba</p>
+          <h2 id="titulo-quiz" class="titulo-seccion">¿Cuánto aprendiste?</h2>
+        </header>
+        <div class="tarjeta revelar" id="quiz-caja" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <section id="equipo" class="seccion" aria-labelledby="titulo-equipo">
+      <div class="container">
+        <header class="text-center mb-5 revelar">
+          <p class="etiqueta-seccion">Grupo A1</p>
+          <h2 id="titulo-equipo" class="titulo-seccion">El equipo</h2>
+          <p class="subtitulo">Ingeniería en Sistemas y Redes Informáticas · Universidad Gerardo Barrios</p>
+        </header>
+        <div class="row g-4 justify-content-center" id="lista-equipo"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="pie-agro">
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-lg-5">
+          <p class="h4 fw-bold text-white"><i class="bi bi-flower1"></i> AgroSmart</p>
+          <p class="text-white-50 mb-0">Monitoreo agrícola inteligente, de bajo costo y sin internet. Proyecto presentado en la Feria de Hardware y Automatización de la Universidad Gerardo Barrios.</p>
+        </div>
+        <div class="col-lg-4">
+          <p class="fw-bold text-white mb-2">Fuentes</p>
+          <ul class="list-unstyled small mb-0">
+            <li><a href="https://www.fao.org/newsroom/detail/How-to-overcome-water-challenges-in-agriculture" target="_blank" rel="noopener">FAO · Agua en la agricultura</a></li>
+            <li><a href="https://www.fao.org/plant-production-protection/about/en" target="_blank" rel="noopener">FAO · Protección de plantas</a></li>
+            <li><a href="https://github.com/spMohanty/PlantVillage-Dataset" target="_blank" rel="noopener">Dataset PlantVillage</a></li>
+          </ul>
+        </div>
+        <div class="col-lg-3">
+          <p class="fw-bold text-white mb-2">Tecnologías</p>
+          <p class="small text-white-50 mb-0">ESP8266 · Raspberry Pi 3 · MQTT · Mosquitto · Node-RED · YOLO11 · OpenCV · ONNX</p>
+        </div>
+      </div>
+      <hr class="border-secondary my-4">
+      <p class="small text-white-50 mb-0 text-center">© <span id="anio">2026</span> Grupo A1 · Universidad Gerardo Barrios</p>
+    </div>
+  </footer>
+
+  <button class="btn-arriba" type="button" id="btn-arriba" aria-label="Volver arriba"><i class="bi bi-arrow-up"></i></button>
+
+  <div class="modal fade" id="modal-zoom" tabindex="-1" aria-labelledby="modal-zoom-titulo" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title h5" id="modal-zoom-titulo">Diagrama</h2>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body p-2 zoom-cuerpo">
+          <img id="modal-zoom-img" src="" alt="" class="w-100">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
