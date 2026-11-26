@@ -240,6 +240,8 @@ mark { background: #ffe58a; padding: 0 0.1rem; border-radius: 0.2rem; }
 }
 
 @media (max-width: 575.98px) {
+  #lista-preguntas .accordion-button { flex-wrap: wrap; }
+  #lista-preguntas .categoria { width: calc(100% - 2rem); margin: 0 0 0.25rem; }
   .escenario-mqtt { height: 230px; }
   .nodo-mqtt { width: 92px; height: 72px; font-size: 0.75rem; }
   .nodo-mqtt i { font-size: 1.3rem; }

@@ -45,7 +45,7 @@ function iniciarRevelado() {
         e.target.classList.add("visto");
         obs.unobserve(e.target);
       }),
-    { threshold: 0.12 }
+    { threshold: 0, rootMargin: "0px 0px -8% 0px" }
   );
   $$(".revelar").forEach((n) => obs.observe(n));
 }
@@ -189,9 +189,21 @@ function iniciarPreguntas(faq) {
     filtros.append(b);
   });
 
+  const INICIALES = 8;
+  let todas = false;
+  const masBoton = crear("button", { type: "button", class: "btn btn-outline-agro w-100 mt-2" });
+  masBoton.addEventListener("click", () => {
+    todas = !todas;
+    pintar();
+    if (!todas) $("#preguntas").scrollIntoView({ behavior: "smooth" });
+  });
+  lista.after(masBoton);
+
   function pintar() {
     const q = normalizar(buscar.value.trim());
-    const visibles = faq.filter((f) => (categoria === "Todas" || f.categoria === categoria) && (!q || normalizar(f.pregunta + " " + f.respuesta).includes(q)));
+    const filtradas = faq.filter((f) => (categoria === "Todas" || f.categoria === categoria) && (!q || normalizar(f.pregunta + " " + f.respuesta).includes(q)));
+    const recortar = !q && categoria === "Todas" && !todas;
+    const visibles = recortar ? filtradas.slice(0, INICIALES) : filtradas;
     lista.replaceChildren();
     visibles.forEach((f, i) => {
       const id = `p${i}`;
@@ -202,7 +214,10 @@ function iniciarPreguntas(faq) {
       const cuerpo = crear("div", { id, class: "accordion-collapse collapse", "data-bs-parent": "#lista-preguntas" }, [crear("div", { class: "accordion-body" }, resaltar(f.respuesta, q))]);
       lista.append(crear("div", { class: "accordion-item" }, [crear("h3", { class: "accordion-header" }, boton), cuerpo]));
     });
-    contador.textContent = visibles.length ? `Mostrando ${visibles.length} de ${faq.length} preguntas` : "No encontramos esa pregunta. Pregúntanos en el stand.";
+    contador.textContent = filtradas.length ? `Mostrando ${visibles.length} de ${filtradas.length} preguntas` : "No encontramos esa pregunta. Pregúntanos en el stand.";
+    const mostrarBoton = !q && categoria === "Todas";
+    masBoton.hidden = !mostrarBoton;
+    masBoton.textContent = todas ? "Ver menos preguntas" : `Ver todas las preguntas (${faq.length})`;
   }
 
   let espera;
