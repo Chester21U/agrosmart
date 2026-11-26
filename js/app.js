@@ -290,14 +290,17 @@ function iniciarQuiz(preguntas) {
   mostrar();
 }
 
-function iniciarEquipo(nombres) {
+function iniciarEquipo(integrantes) {
   const lista = $("#lista-equipo");
-  nombres.forEach((n) => {
-    const partes = n.split(" ");
+  integrantes.forEach(({ nombre, foto }) => {
+    const partes = nombre.split(" ");
     const iniciales = (partes[0][0] + (partes[partes.length - 2] || partes[1])[0]).toUpperCase();
+    const avatar = foto
+      ? crear("img", { class: "avatar avatar-foto", src: foto, alt: `Foto de ${nombre}`, loading: "lazy", width: "400", height: "400" })
+      : crear("div", { class: "avatar", "aria-hidden": "true", text: iniciales });
     lista.append(
       crear("article", { class: "col-6 col-md-4 col-lg revelar visto" }, [
-        crear("div", { class: "tarjeta integrante h-100" }, [crear("div", { class: "avatar", "aria-hidden": "true", text: iniciales }), crear("h3", { class: "h6 fw-bold mb-0", text: n })])
+        crear("div", { class: "tarjeta integrante h-100" }, [avatar, crear("h3", { class: "h6 fw-bold mb-0", text: nombre })])
       ])
     );
   });

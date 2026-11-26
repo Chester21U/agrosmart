@@ -1,10 +1,10 @@
 export const DATOS = {
   "equipo": [
-    "Abraham Bladimir Umanzor Vásquez",
-    "Andy Jhoan Navarrete Ramos",
-    "Freddy Samuel Vásquez Álvarez",
-    "Héctor Eduardo Contreras Romero",
-    "Michaell Daniel Chavarria Romero"
+    { "nombre": "Abraham Bladimir Umanzor Vásquez", "foto": "img/equipo/abraham.webp" },
+    { "nombre": "Andy Jhoan Navarrete Ramos", "foto": "img/equipo/andy.webp" },
+    { "nombre": "Freddy Samuel Vásquez Álvarez", "foto": "img/equipo/freddy.webp" },
+    { "nombre": "Héctor Eduardo Contreras Romero", "foto": "img/equipo/hector.webp" },
+    { "nombre": "Michaell Daniel Chavarria Romero", "foto": "img/equipo/michaell.webp" }
   ],
   "mensajes": {
     "telemetria": {
